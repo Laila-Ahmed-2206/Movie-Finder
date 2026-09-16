@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie.exe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="scanlines"></div>
+  <div class="browser-top">
+    <div class="browser-lights">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="browser-address">
+      movie.exe://discover
+    </div>
+    <div class="browser-status">
+      ● ONLINE
+    </div>
+  </div>
+  <header>
+    <nav>
+      <a href="#" class="logo"> movie <span> .exe </span></a>
+      <div class="nav-buttons">
+        <button type="button" id="watchlistBtn" class="retro-button light"> WATCHLIST <span id="watchlistCount"> 0 </span></button>
+        <button type="button" id="randomBtn" class="retro-button"> 🎲 RANDOM </button>
+      </div>
+    </nav>
+    <div class="ticker">
+      <div class="ticker-track">
+        <span>★ MOVIE DATABASE ONLINE ★ SEARCH ★ FILTER ★ TRAILERS ★ STREAMING OPTIONS ★ WATCHLIST ★</span>
+        <span aria-hidden="true">★ MOVIE DATABASE ONLINE ★ SEARCH ★ FILTER ★ TRAILERS ★ STREAMING OPTIONS ★ WATCHLIST ★</span>
+      </div>
+    </div>
+    <section class="hero">
+      <div class="status-pill"><span> ● </span>
+        DATABASE CONNECTED
+      </div>
+        <h1> FIND YOUR NEXT <span> MOVIE OBSESSION. </span>
+        </h1>
+        <p class="hero-copy"> Search movies, explore genres, watch trailers, and check where they may be available. </p>
+        <form id="searchForm" class="window search-window">
+          <div class="window-title">
+            <span> SEARCH_MOVIE.EXE </span>
+            <span> _ □ × </span>
+          </div>
+           <div class="search-body">
+            <div class="search-row">
+              <span class="search-icon"> ⌕ </span>
+              <input id="searchInput" type="text" autocomplete="off" placeholder="Search a movie title...">
+              <button type="submit"> SEARCH </button>
+            </div>
+            <div id="searchSuggestion" class="search-suggestion hidden"></div>
+          </div>
+        </form>
+    </section>
+  </header>
+    <main>
+      <section class="window filter-window">
+        <div class="window-title">
+          <span> FILTER_PANEL.EXE </span>
+          <span> READY </span>
+        </div>
+        <div class="filter-grid">
+          <div class="filter-group">
+            <label for="genreFilter"> GENRE </label>
+            <select id="genreFilter">
+              <option value=""> All genres </option>
+             </select>
+            </div>
+            <div class="filter-group">
+              <label for="yearFilter"> DECADE </label>
+              <select id="yearFilter">
+                <option value=""> Any decade </option>
+                <option value="2020"> 2020s </option>
+                <option value="2010"> 2010s </option>
+                <option value="2000"> 2000s </option>
+                <option value="1990"> 1990s </option>
+                <option value="1980"> 1980s </option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="ratingFilter"> RATING </label>
+              <select id="ratingFilter">
+                <option value="0"> Any rating </option>
+                <option value="6"> 6+ </option>
+                <option value="7"> 7+ </option>
+                <option value="8"> 8+ </option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="sortFilter"> SORT </label>
+              <select id="sortFilter">
+                <option value="popularity.desc"> Popularity </option>
+                <option value="vote_average.desc"> Rating </option>
+                <option value="release_date.desc"> Newest </option>
+              </select>
+            </div>
+            <button type="button" id="clearFilters" class="reset-button"> RESET </button>
+          </div>
+        </section>
+        <section class="results-header">
+          <div>
+            <div class="terminal-path"> C:\MOVIES\DATABASE> </div>
+            <h2 id="sectionTitle"> POPULAR MOVIES </h2>
+          </div>
+          <span id="resultCount"></span>
+        </section>
+        <div id="loader" class="loader hidden">
+          <div class="disc"> 💿 </div>
+          <p> LOADING DATABASE... </p>
+        </div>
+        <div id="messageBox" class="message-box hidden"></div>
+        <section id="movieGrid" class="movie-grid"></section>
+        <div class="load-more-wrap">
+          <button type="button" id="loadMoreBtn" class="load-more hidden"> LOAD MORE </button>
+        </div>
+      </main>
+      <div id="movieModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalWindowTitle">
+        <div class="modal-overlay"></div>
+        <div class="window movie-modal-window">
+          <div class="window-title modal-title">
+            <span id="modalWindowTitle"> MOVIE.EXE </span>
+            <button type="button" id="closeModal" aria-label="Close movie details"> × </button>
+          </div>
+          <div id="modalContent"></div>
+        </div>
+      </div>
+      <footer>
+        <span> movie.exe © 2026 </span>
+        <span> Movie data: <a href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer"> TMDB </a></span>
+        <span> Streaming data powered by JustWatch </span>
+      </footer>
+    <script src="script.js"></script>
+</body>
+</html>
