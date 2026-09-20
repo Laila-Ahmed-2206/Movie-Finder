@@ -1,0 +1,219 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: "Space Mono", monospace;
+  background: #ffc5df;
+  color: #151515;
+}
+
+.login-background {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  background:
+    radial-gradient(circle at 20% 20%, #ffffff 0, transparent 25%),
+    radial-gradient(circle at 80% 80%, #d8c5ff 0, transparent 30%),
+    #ffc5df;
+}
+
+.login-window {
+  width: 100%;
+  max-width: 520px;
+  background: #fff;
+  border: 3px solid #151515;
+  box-shadow: 10px 10px 0 #151515;
+}
+
+.window-bar {
+  height: 42px;
+  background: #d8c5ff;
+  border-bottom: 3px solid #151515;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 14px;
+  font-family: "Press Start 2P", monospace;
+  font-size: 10px;
+}
+
+.window-buttons {
+  height: 100%;
+  display: flex;
+}
+
+.window-buttons span {
+  width: 42px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: 2px solid #151515;
+  font-family: Arial, sans-serif;
+  font-size: 17px;
+}
+
+.login-content {
+  padding: 45px;
+}
+
+.login-logo {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.disc {
+  font-size: 55px;
+  margin-bottom: 18px;
+  animation: spin 5s linear infinite;
+}
+
+.login-logo h1 {
+  font-family: "Press Start 2P", monospace;
+  font-size: 23px;
+  margin-bottom: 15px;
+}
+
+.login-logo p {
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 28px;
+  border: 2px solid #151515;
+}
+
+.auth-tab {
+  border: none;
+  background: #eee;
+  padding: 14px 5px;
+  cursor: pointer;
+  font-family: "Press Start 2P", monospace;
+  font-size: 8px;
+}
+
+.auth-tab:first-child {
+  border-right: 2px solid #151515;
+}
+
+.auth-tab.active {
+  background: #ffc5df;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  font-family: "Press Start 2P", monospace;
+  font-size: 8px;
+}
+
+.input-group input {
+  width: 100%;
+  border: 2px solid #151515;
+  padding: 14px;
+  font-family: "Space Mono", monospace;
+  font-size: 14px;
+  outline: none;
+}
+
+.input-group input:focus {
+  background: #fff5fa;
+  box-shadow: 4px 4px 0 #d8c5ff;
+}
+
+.auth-button {
+  width: 100%;
+  border: 2px solid #151515;
+  background: #ffc5df;
+  padding: 16px;
+  cursor: pointer;
+  font-family: "Press Start 2P", monospace;
+  font-size: 9px;
+  box-shadow: 4px 4px 0 #151515;
+  transition: 0.15s;
+}
+
+.auth-button:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #151515;
+}
+
+.auth-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.auth-message {
+  min-height: 25px;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.auth-message.error {
+  color: #c40000;
+}
+
+.auth-message.success {
+  color: #008000;
+}
+
+.guest-button {
+  width: 100%;
+  margin-top: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: underline;
+  font-family: "Space Mono", monospace;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+.window-footer {
+  border-top: 3px solid #151515;
+  background: #eee;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  font-family: "Press Start 2P", monospace;
+  font-size: 6px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  .login-content {
+    padding: 30px 20px;
+  }
+
+  .login-logo h1 {
+    font-size: 18px;
+  }
+
+  .login-window {
+    box-shadow: 6px 6px 0 #151515;
+  }
+}
