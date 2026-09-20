@@ -1,7 +1,11 @@
+// Main application configuration for the movie browser UI.
+// These values define where poster images are loaded from and which region
+// is used when checking streaming availability data.
 const IMAGE_URL = "https://image.tmdb.org/t/p/w500";
 const LOGO_URL = "https://image.tmdb.org/t/p/w92";
 const WATCH_REGION = "QA";
 
+// Small helper that keeps DOM lookups consistent and readable throughout the app.
 const $ = id => document.getElementById(id);
 const movieGrid = $("movieGrid");
 const searchForm = $("searchForm");
@@ -25,6 +29,9 @@ const modalContent = $("modalContent");
 const closeModal = $("closeModal");
 const modalWindowTitle = $("modalWindowTitle");
 
+// Shared application state.
+// These variables track the movie list currently shown, pagination, filter values,
+// the fuzzy-search index, and the user's saved watchlist from localStorage.
 let genres = [];
 let currentMovies = [];
 let currentPage = 1;
@@ -39,6 +46,8 @@ try {
   console.warn("Saved watchlist could not be loaded:", error);
 }
 
+// Sends a movie database request through the internal API route so the TMDB key
+// stays hidden in the backend instead of being exposed in the browser.
 async function apiFetch(endpoint) {
   const response = await fetch(`/api/movies?endpoint=${encodeURIComponent(endpoint)}`);
   if (!response.ok) {
@@ -47,6 +56,8 @@ async function apiFetch(endpoint) {
   return response.json();
 }
 
+// Bootstraps the app when the page loads by loading the genre list, the default
+// movie feed, and the search index used for fuzzy matching.
 async function init() {
   updateWatchlistCount();
   try {
@@ -59,6 +70,7 @@ async function init() {
   }
 }
 
+// Fetches the available movie genres from TMDB and populates the select filter.
 async function loadGenres() {
   const data = await apiFetch("/genre/movie/list?language=en-US");
   genres = data.genres || [];
@@ -70,6 +82,8 @@ async function loadGenres() {
   });
 }
 
+// Loads the main movie list for the selected filters and page.
+// The append flag lets the app add more results to the grid without resetting it.
 async function discoverMovies(append = false) {
   showingWatchlist = false;
 
@@ -119,6 +133,8 @@ async function discoverMovies(append = false) {
   }
 }
 
+// Applies the selected genre, decade, rating, and sorting rules to a movie array.
+// This keeps the movie collection aligned with the current UI filters before display.
 function applyFilters(movies) {
   let filtered = [...movies];
 
@@ -153,6 +169,8 @@ function applyFilters(movies) {
   return filtered;
 }
 
+// Performs a live movie search by query, fetching multiple TMDB pages if needed.
+// If the exact title is not found, this can also fall back to fuzzy matching.
 async function searchMovies(query) {
   const cleanQuery = query.trim();
 
@@ -203,6 +221,8 @@ async function searchMovies(query) {
   }
 }
 
+// Builds a lightweight search index from popular movies so near-matches can be suggested
+// when the user types a title that is not an exact match.
 async function buildSearchIndex() {
   try {
     const requests = Array.from({ length: 10 }, (_, index) => apiFetch(`/movie/popular?language=en-US&page=${index + 1}`));
@@ -215,6 +235,8 @@ async function buildSearchIndex() {
   }
 }
 
+// Finds titles that are similar to the typed query by comparing normalized strings
+// and ranking results by relevance.
 function fuzzySearch(query) {
   const clean = normalizeText(query);
   return searchIndex.map(movie => {
@@ -249,6 +271,8 @@ function levenshtein(a, b) {
   return matrix[b.length][a.length];
 }
 
+// Creates one movie card element for the grid, including the poster, rating, year,
+// and a watchlist toggle button.
 function createMovieCard(movie, index) {
   const saved = isSaved(movie.id);
   const card = document.createElement("article");
@@ -274,6 +298,8 @@ function createMovieCard(movie, index) {
   return card;
 }
 
+// Renders a complete set of movie cards into the main gallery.
+// If no results match, it swaps in a helpful message instead of a blank grid.
 function displayMovies(movies) {
   hideLoader();
   messageBox.classList.add("hidden");
@@ -297,6 +323,8 @@ function appendMovies(movies) {
   });
 }
 
+// Opens the movie detail dialog and fetches the main info, trailer, and streaming data
+// for the selected title before rendering the modal content.
 async function openMovie(movieID) {
   movieModal.classList.remove("hidden");
   document.body.style.overflow = "hidden";
@@ -316,6 +344,8 @@ async function openMovie(movieID) {
   }
 }
 
+// Builds the content of the popup modal using the fetched TMDB metadata,
+// available trailers, and known providers for the selected region.
 function renderMovieModal(movie, videos, providers) {
   modalWindowTitle.textContent = `${movie.title}.exe`;
 
@@ -340,12 +370,16 @@ function renderMovieModal(movie, videos, providers) {
   });
 }
 
+// Chooses the best trailer candidate from the movie's video list, preferring official
+// YouTube trailers in the order: official trailer, any trailer, then any YouTube video.
 function chooseTrailer(videos) {
   return videos.find(video => video.site === "YouTube" && video.type === "Trailer" && video.official)
     || videos.find(video => video.site === "YouTube" && video.type === "Trailer")
     || videos.find(video => video.site === "YouTube");
 }
 
+// Converts provider data into HTML cards so the user can quickly see where a movie
+// is available to stream, rent, or buy in the selected region.
 function buildProviderHTML(providerData) {
   const region = providerData.results?.[WATCH_REGION];
   const manualLinks = `<div class="manual-title">OTHER PLATFORMS</div><div class="manual-platforms"><a href="https://www.1flex.org/" target="_blank" rel="noopener noreferrer" class="manual-platform flex-platform"><div class="platform-icon flex-icon">1F</div><div class="platform-text"><strong>1Flex</strong><span>Open 1Flex</span></div><span class="external-arrow">↗</span></a><a href="https://www.netflix.com/" target="_blank" rel="noopener noreferrer" class="manual-platform netflix-platform"><div class="platform-icon netflix-icon">N</div><div class="platform-text"><strong>Netflix</strong><span>Check Netflix</span></div><span class="external-arrow">↗</span></a></div>`;
@@ -363,10 +397,12 @@ function providerRow(title, providers = []) {
   return `<div class="provider-title">${title}</div><div class="provider-list">${unique.map(provider => `<div class="provider">${provider.logo_path ? `<img src="${LOGO_URL}${provider.logo_path}" alt="${escapeHTML(provider.provider_name)}">` : ""}<span>${escapeHTML(provider.provider_name)}</span></div>`).join("")}</div>`;
 }
 
+// Checks whether a movie is already saved in the local watchlist.
 function isSaved(id) {
   return watchlist.some(movie => movie.id === id);
 }
 
+// Adds or removes a movie from the watchlist and persists the updated list in the browser.
 function toggleWatchlist(movie) {
   watchlist = isSaved(movie.id)
     ? watchlist.filter(saved => saved.id !== movie.id)
@@ -383,10 +419,12 @@ function toggleWatchlist(movie) {
   updateWatchlistCount();
 }
 
+// Updates the badge count used in the top navigation to show the number of saved movies.
 function updateWatchlistCount() {
   watchlistCount.textContent = watchlist.length;
 }
 
+// Replaces the normal discover layout with the saved-movies collection.
 function showWatchlist() {
   showingWatchlist = true;
   sectionTitle.textContent = "MY WATCHLIST";
@@ -395,6 +433,7 @@ function showWatchlist() {
   displayMovies(watchlist);
 }
 
+// Picks a random popular movie and opens it in the detail modal to add surprise discovery.
 async function openRandomMovie() {
   try {
     const page = Math.floor(Math.random() * 20) + 1;
@@ -408,16 +447,19 @@ async function openRandomMovie() {
   }
 }
 
+// Returns the first matching genre name for a movie card, using the available genre metadata.
 function getGenreName(movie) {
   const genreID = movie.genre_ids?.[0] || movie.genres?.[0]?.id;
   return genres.find(genre => genre.id === genreID)?.name || "Movie";
 }
 
+// Generates a simple inline SVG placeholder for movies that do not have a poster image.
 function makePlaceholder() {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="500" height="750"><rect width="100%" height="100%" fill="#ffc5df"/><text x="50%" y="50%" text-anchor="middle" font-family="monospace" font-size="30" fill="#151515">NO POSTER</text></svg>`;
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
+// Shows and hides the loading overlay used while the app fetches data from the API.
 function showLoader() {
   loader.classList.remove("hidden");
   messageBox.classList.add("hidden");
@@ -447,6 +489,7 @@ function hideLoadMoreLoader() {
   if (loadMoreLoader) loadMoreLoader.remove();
 }
 
+// Displays a message block when the app hits an error or when there are no search results.
 function showMessage(title, text) {
   hideLoader();
   movieGrid.innerHTML = "";
@@ -471,12 +514,14 @@ function resetDiscover() {
   }
 }
 
+// Closes the movie detail modal and restores normal page scrolling.
 function closeMovieModal() {
   movieModal.classList.add("hidden");
   document.body.style.overflow = "";
   modalContent.innerHTML = "";
 }
 
+// Repeats the marquee text so the ticker scrolls smoothly across different screen widths.
 function setupTicker() {
   const ticker = document.querySelector(".ticker");
   const track = document.querySelector(".ticker-track");
@@ -494,6 +539,7 @@ function setupTicker() {
   if (track.children.length % 2) track.appendChild(source.cloneNode(true));
 }
 
+// Wire up the form and button events to keep the interface interactive.
 searchForm.addEventListener("submit", event => {
   event.preventDefault();
   searchMovies(searchInput.value);

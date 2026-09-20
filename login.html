@@ -12,69 +12,48 @@
 </head>
 
 <body>
-
-<div class="login-background">
-
-  <div class="login-window">
-
-    <div class="window-bar">
-      <span>LOGIN.EXE</span>
-      <div class="window-buttons">
-        <span>—</span>
-        <span>□</span>
-        <span>×</span>
-      </div>
-    </div>
-
-    <div class="login-content">
-
-      <div class="login-logo">
-        <div class="disc">💿</div>
-        <h1>MOVIE.EXE</h1>
-        <p>YOUR PERSONAL MOVIE DATABASE</p>
-      </div>
-
-      <div class="auth-tabs">
-        <button id="signinTab" class="auth-tab active">SIGN IN</button>
-        <button id="signupTab" class="auth-tab">CREATE ACCOUNT</button>
-      </div>
-
-      <form id="authForm">
-
-        <div class="input-group">
-          <label for="email">EMAIL</label>
-          <input type="email" id="email" placeholder="user@email.com" required>
+    <div class="login-background">
+        <div class="login-window">
+            <div class="window-bar">
+                <span> LOGIN.EXE </span>
+                <div class="window-buttons">
+                    <span> — </span>
+                    <span> □ </span>
+                    <span> × </span>
+                </div>
+            </div>
+            <div class="login-content">
+                <div class="login-logo">
+                    <div class="disc"> 💿 </div>
+                    <h1> MOVIE.EXE </h1>
+                    <p> YOUR PERSONAL MOVIE DATABASE </p>
+                </div>
+                <div class="auth-tabs">
+                    <button id="signinTab" class="auth-tab active">SIGN IN</button>
+                    <button id="signupTab" class="auth-tab">CREATE ACCOUNT</button>
+                </div>
+                <form id="authForm">
+                    <div class="input-group">
+                        <label for="email"> EMAIL </label>
+                        <input type="email" id="email" placeholder="user@email.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password"> PASSWORD </label>
+                        <input type="password" id="password" placeholder="••••••••" minlength="6" required>
+                    </div>
+                    <button type="submit" id="authButton" class="auth-button"> SIGN IN </button>
+                </form>
+                <div id="authMessage" class="auth-message"></div>
+                <button id="continueGuest" class="guest-button"> CONTINUE AS GUEST → </button>
+            </div>
+            <div class="window-footer">
+                <span> STATUS: READY </span>
+                <span> Movie.exe </span>
+            </div>
         </div>
-
-        <div class="input-group">
-          <label for="password">PASSWORD</label>
-          <input type="password" id="password" placeholder="••••••••" minlength="6" required>
-        </div>
-
-        <button type="submit" id="authButton" class="auth-button">
-          SIGN IN
-        </button>
-
-      </form>
-
-      <div id="authMessage" class="auth-message"></div>
-
-      <button id="continueGuest" class="guest-button">
-        CONTINUE AS GUEST →
-      </button>
-
     </div>
-
-    <div class="window-footer">
-      <span>STATUS: READY</span>
-      <span>Movie.exe</span>
-    </div>
-
-  </div>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="auth.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
 </body>
 </html>

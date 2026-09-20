@@ -17,10 +17,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 30px;
-  background:
-    radial-gradient(circle at 20% 20%, #ffffff 0, transparent 25%),
-    radial-gradient(circle at 80% 80%, #d8c5ff 0, transparent 30%),
-    #ffc5df;
+  background: radial-gradient(circle at 20% 20%, #ffffff 0, transparent 25%), radial-gradient(circle at 80% 80%, #d8c5ff 0, transparent 30%), #ffc5df;
 }
 
 .login-window {
@@ -198,21 +195,17 @@ body {
   from {
     transform: rotate(0deg);
   }
-
   to {
     transform: rotate(360deg);
   }
 }
-
 @media (max-width: 600px) {
   .login-content {
     padding: 30px 20px;
   }
-
   .login-logo h1 {
     font-size: 18px;
   }
-
   .login-window {
     box-shadow: 6px 6px 0 #151515;
   }
