@@ -126,12 +126,10 @@ continueGuest.addEventListener("click", () => {
     window.location.href = "index.html";
 });
 
-// Redirects the user to the main app if they already have an active Supabase session.
+// Intentionally disabled so the login screen always appears on launch,
+// even for users who already have a Supabase session.
 async function checkExistingSession() {
-    const { data } = await supabaseClient.auth.getSession();
-  if (data.session) {
-    window.location.href = "index.html";
-  }
+  return;
 }
 
-checkExistingSession();
+// No automatic redirect on page load.
