@@ -98,14 +98,14 @@ authForm.addEventListener("submit", async event => {
       await signIn(email, password);
       showMessage("LOGIN SUCCESSFUL. OPENING DATABASE...", "success");
       setTimeout(() => {
-        window.location.href = "index.html";
+        window.location.href = "movie.html";
       }, 700);
     } else {
       const data = await signUp(email, password);
       if (data.session) {
         showMessage("ACCOUNT CREATED. OPENING DATABASE...", "success");
         setTimeout(() => {
-          window.location.href = "index.html";
+          window.location.href = "movie.html";
         }, 700);
       } else {
         showMessage("ACCOUNT CREATED. CHECK YOUR EMAIL TO CONFIRM YOUR ACCOUNT.", "success");
@@ -123,7 +123,7 @@ signinTab.addEventListener("click", showSignIn);
 signupTab.addEventListener("click", showSignUp);
 // Lets a user skip authentication and continue using the app without an account.
 continueGuest.addEventListener("click", () => {
-    window.location.href = "index.html";
+    window.location.href = "movie.html";
 });
 
 // Intentionally disabled so the login screen always appears on launch,
