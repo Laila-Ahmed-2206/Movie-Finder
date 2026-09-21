@@ -95,7 +95,9 @@ authForm.addEventListener("submit", async event => {
   setLoading(true);
   try {
     if (authMode === "signin") {
-      await signIn(email, password);
+      const data = await signIn(email, password);
+      const userId = data.user?.id || "guest";
+      localStorage.setItem("movieExeCurrentUserId", userId);
       showMessage("LOGIN SUCCESSFUL. OPENING DATABASE...", "success");
       setTimeout(() => {
         window.location.href = "movie.html";
@@ -103,6 +105,8 @@ authForm.addEventListener("submit", async event => {
     } else {
       const data = await signUp(email, password);
       if (data.session) {
+        const userId = data.user?.id || "guest";
+        localStorage.setItem("movieExeCurrentUserId", userId);
         showMessage("ACCOUNT CREATED. OPENING DATABASE...", "success");
         setTimeout(() => {
           window.location.href = "movie.html";
@@ -123,6 +127,7 @@ signinTab.addEventListener("click", showSignIn);
 signupTab.addEventListener("click", showSignUp);
 // Lets a user skip authentication and continue using the app without an account.
 continueGuest.addEventListener("click", () => {
+    localStorage.setItem("movieExeCurrentUserId", "guest");
     window.location.href = "movie.html";
 });
 

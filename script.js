@@ -4,6 +4,9 @@
 const IMAGE_URL = "https://image.tmdb.org/t/p/w500";
 const LOGO_URL = "https://image.tmdb.org/t/p/w92";
 const WATCH_REGION = "QA";
+const SUPABASE_URL = "https://oevtmsoshnxshtmtdezb.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_ibo6HlJi-WSYVcsAi-nv_Q_IK0fOfMy";
+const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 // Small helper that keeps DOM lookups consistent and readable throughout the app.
 const $ = id => document.getElementById(id);
@@ -39,9 +42,21 @@ let searchIndex = [];
 let showingWatchlist = false;
 let watchlist = [];
 
+function getWatchlistStorageKey() {
+  const userId = localStorage.getItem("movieExeCurrentUserId") || "guest";
+  return `movieExeWatchlist_${userId}`;
+}
+
 try {
-  const saved = JSON.parse(localStorage.getItem("movieExeWatchlist"));
+  const storageKey = getWatchlistStorageKey();
+  const saved = JSON.parse(localStorage.getItem(storageKey) || "null");
   watchlist = Array.isArray(saved) ? saved : [];
+
+  const legacySaved = JSON.parse(localStorage.getItem("movieExeWatchlist") || "null");
+  if (Array.isArray(legacySaved) && !localStorage.getItem(storageKey)) {
+    localStorage.setItem(storageKey, JSON.stringify(legacySaved));
+    watchlist = legacySaved;
+  }
 } catch (error) {
   console.warn("Saved watchlist could not be loaded:", error);
 }
@@ -415,7 +430,7 @@ function toggleWatchlist(movie) {
         genre_ids: movie.genre_ids || movie.genres?.map(genre => genre.id) || []
       }];
 
-  localStorage.setItem("movieExeWatchlist", JSON.stringify(watchlist));
+  localStorage.setItem(getWatchlistStorageKey(), JSON.stringify(watchlist));
   updateWatchlistCount();
 }
 
